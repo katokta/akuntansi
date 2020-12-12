@@ -2,17 +2,17 @@
     session_start();
     error_reporting(0);
     include('includes/dbconnection.php');
-    if (isset($_POST['transname'])){
+    if (isset($_POST['submit'])){
     
-        $transname = $_POST['transname'];
-        $transtime = $_POST['transtime'];
-        $transdate = $_POST['transdate'];
-        $accountcredit = $_POST['accountcredit'];
-        $amountcredit = $_POST['amountcredit'];
-        $accountdebit = $_POST['accountdebit'];
-        $amountdebit = $_POST['amountdebit'];
-        $transdesc = $_POST['transdesc'];
-        $namastaff = $_POST['staffname'];
+        $transname = $_POST['Outflow_Name'];
+        $transtime = $_POST['Outflow_Time'];
+        $transdate = $_POST['Outflow_Date'];
+        $accountcredit = $_POST['Outflow_Account_Credit'];
+        $amountcredit = $_POST['Amount_Credit'];
+        $accountdebit = $_POST['Outflow_Account_Debit'];
+        $amountdebit = $_POST['Amount_Debit'];
+        $transdesc = $_POST['Outflow_Description'];
+        $namastaff = $_POST['Staf_PIC'];
     
         $msg = "";
     
@@ -33,9 +33,10 @@
         } else if ($transdesc==""){
             $msg ="Deskripsi transaksi harus diisi";
         } else{
-            $result=mysqli_query($con, "INSERT INTO outflow VALUES (null, '".$transname."', '".$accountdebit."', 
-            '".$accountcredit."', '".$amountdebit."', '".$amountcredit."', '".$transdesc."', '".$transdate."', 
-            '".$transtime."', '".$namastaff."')");
+            $result=mysqli_query($con, "INSERT INTO outflow (Outflow_Name, Outflow_Account_Debit, Outflow_Account_Credit,
+            Amount_Debit, Amount_Credit, Outflow_Description, Outflow_Date, Outflow_Time, Staf_PIC) VALUES ('$transname', '$accountdebit', 
+            '$accountcredit', '$amountdebit', '$amountcredit', '$transdesc', '$transdate', '$transtime',
+            '$namastaff')");
             $msg = "Berhasil menjurnal transaksi baru!";
             $_SESSION["msg"]=$msg;
         header("location:outflow.php");
@@ -123,45 +124,43 @@
                             <form name="computer" method="post" action="">
                                 <p style="font-size:16px; color:red" align="center"> <?php if($msg){echo $msg;}  ?> </p>
                             <div class="card-body card-block">
-                                <div class="form-group"><label for="company" class=" form-control-label">Transaction Name</label><input type="text" name="transname" value="" class="form-control" id="username" required="true"></div>
-                                <div class="form-group"><label for="company" class=" form-control-label">Transaction Time</label><input type="time" name="transtime" value="" class="form-control" id="username" required="true"></div>                          
+                                <div class="form-group"><label for="company" class=" form-control-label">Transaction Name</label><input type="text" name="Outflow_Name" value="" class="form-control" id="username" required="true"></div>
+                                <div class="form-group"><label for="company" class=" form-control-label">Transaction Time</label><input type="time" name="Outflow_Time" value="" class="form-control" id="username" required="true"></div>                          
                                             <div class="row form-group">
                                                 <div class="col-12">
-                                                    <div class="form-group"><label for="city" class=" form-control-label">Transaction Date</label><input type="date" name="transdate" id="mobilenumber" value="" class="form-control" required="true" maxlength="10" pattern="[0-9]+"></div>
-                                                    <div class="form-group"><label for="company" class=" form-control-label">Transaction Description</label><input type="text" name="transdesc" value="" class="form-control" id="username" required="true"></div>      
+                                                    <div class="form-group"><label for="city" class=" form-control-label">Transaction Date</label><input type="date" name="Outflow_Date" id="mobilenumber" value="" class="form-control" required="true"></div>
+                                                    <div class="form-group"><label for="company" class=" form-control-label">Transaction Description</label><input type="text" name="Outflow_Description" value="" class="form-control" id="username" required="true"></div>      
 </div>
                                                     <div class="col-12">
                                                     <div class="form-group"><label for="city" class=" form-control-label">Transaction Credit Account</label>
-                                                    <select name="accountcredit" id="accountcredit">
-                                                        <?php 
-                                                        $accounts=$con->query("SELECT AccountSubHeading FROM akun_perkiraan");
-                                                        $accounts=$accounts->fetch_all(MYSQLI_ASSOC);
-                                                        foreach($accounts as $account){?>
-                                                            <option value="<?php $account["AccountSubHeading"]?>"><?php echo htmlspecialchars($account["AccountSubHeading"])?></option>
-                                                        <?php } ?>
-                                                        </select>
-                                                        </div>
-                                                        </div>
-                                                    <div class="col-12">
-                                                    <div class="form-group"><label for="city" class=" form-control-label">Transaction Credit Amount</label><input type="text" name="amountcredit" id="email" value="" class="form-control" required="true"></div>
-                                                    </div>
-                                                    <div class="col-12">
-                                                    <div class="form-group"><label for="city" class=" form-control-label">Transaction Debit Account</label>
-                                                    <select name="accountdebit" id="accountdebit">
+                                                    <select name="Outflow_Account_Credit" id="Outflow_Account_Credit">
                                                         <?php 
                                                         $queryaccounts=$con->query("SELECT AccountSubHeading FROM akun_perkiraan");
                                                         $accounts=mysqli_fetch_all($queryaccounts, MYSQLI_ASSOC);
                                                         foreach($accounts as $account){?>
-                                                            <option value="<?=$account['AccountSubHeading']?>"><?php echo htmlspecialchars($account['AccountSubHeading'])?></option>
+                                                            <option value=<?php echo htmlspecialchars($account['AccountSubHeading'])?>><?php echo htmlspecialchars($account["AccountSubHeading"])?></option>
                                                         <?php } ?>
                                                         </select>
                                                         </div>
                                                         </div>
                                                     <div class="col-12">
-                                                    <div class="form-group"><label for="city" class=" form-control-label">Transaction Debit Amount</label><input type="text" name="amountdebit" id="email" value="" class="form-control" required="true"></div>
+                                                    <div class="form-group"><label for="city" class=" form-control-label">Transaction Credit Amount</label><input type="text" name="Amount_Credit" id="Amount_Credit" value="" class="form-control" required="true"></div>
                                                     </div>
                                                     <div class="col-12">
-                                                    <div class="form-group"><label for="city" class=" form-control-label">Staff Name</label><input class="form-control" type="text" name="staffname" readonly value=<?php echo htmlspecialchars($name);?>></div>
+                                                    <div class="form-group"><label for="city" class=" form-control-label">Transaction Debit Account</label>
+                                                    <select name="Outflow_Account_Debit" id="Outflow_Account_Debit">
+                                                        <?php
+                                                        foreach($accounts as $account){?>
+                                                            <option value=<?php echo htmlspecialchars($account['AccountSubHeading'])?>><?php echo htmlspecialchars($account['AccountSubHeading'])?></option>
+                                                        <?php } ?>
+                                                        </select>
+                                                        </div>
+                                                        </div>
+                                                    <div class="col-12">
+                                                    <div class="form-group"><label for="city" class=" form-control-label">Transaction Debit Amount</label><input type="text" name="Amount_Debit" id="email" value="" class="form-control" required="true"></div>
+                                                    </div>
+                                                    <div class="col-12">
+                                                    <div class="form-group"><label for="city" class=" form-control-label">Staff Name</label><input class="form-control" type="text" name="Staf_PIC" readonly value=<?php echo htmlspecialchars($name);?>></div>
                                                     </div>
                                                 
                                                     </div>
@@ -170,7 +169,7 @@
                                                     
                                                      <div class="card-footer">
                                                        <p style="text-align: center;"><button type="submit" class="btn btn-primary btn-sm" name="submit" id="submit">
-                                                            <i class="fa fa-dot-circle-o"></i>  Add
+                                                            <i class="fa fa-dot-circle-o"></i>Add
                                                         </button></p>
                                                         
                                                     </div>
