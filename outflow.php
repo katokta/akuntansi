@@ -94,16 +94,16 @@ include('includes/dbconnection.php');
               <th>Aksi</th>
               <?php 
               $queryoutflow=mysqli_query($con, "SELECT * FROM outflow");
-              $outflows=mysqli_fetch_all($queryakun, MYSQLI_ASSOC);
+              $outflows=mysqli_fetch_all($queryoutflow, MYSQLI_ASSOC);
               foreach($outflows as $outflow){?>
               <tr>
                   <td><?php echo htmlspecialchars($outflow["Outflow_ID"]);?></td>
                   <td><?php echo htmlspecialchars($outflow["Outflow_Name"]);?></td>
-                  <td><?php echo htmlspecialchars($outflow["Description"]);?></td>
+                  <td><?php echo htmlspecialchars($outflow["Outflow_Description"]);?></td>
                   <td><?php echo htmlspecialchars($outflow["Outflow_Date"]);?><br><?php echo htmlspecialchars($outflow["Outflow_Time"]);?></td>
                   <td><?php echo htmlspecialchars($outflow["Outflow_Account_Credit"]);?><br><?php echo htmlspecialchars($outflow["Amount_Credit"]);?></td>
                   <td><?php echo htmlspecialchars($outflow["Outflow_Account_Debit"]);?><br><?php echo htmlspecialchars($outflow["Amount_Debit"]);?></td>
-                  <td><?php echo htmlspecialchars($outflow["Staff_PIC"]);?></td>
+                  <td><?php echo htmlspecialchars($outflow["Staf_PIC"]);?></td>
                   <td><a class="btn btn-primary" href="edit-outflow.php?id=<?=$outflow["Outflow_ID"]?>" role="button">Edit</a><a class="btn btn-danger" href="delete-outflow.php?id=<?=$outflow["Outflow_ID"]?>" role="button">Delete</a></td>
               </tr>
               <?php }?>
